@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "first_name": "Gayle",
+    "last_name": "Caplan",
+    "email": "gcaplan0@bizjournals.com",
+    "gender": "Female",
+    "country": "TW"
+  },
+  {
+    "id": 2,
+    "first_name": "Gwendolen",
+    "last_name": "Folliss",
+    "email": "gfolliss1@un.org",
+    "gender": "Female",
+    "country": "TN"
+  },
+  {
+    "id": 3,
+    "first_name": "Ynez",
+    "last_name": "Gudde",
+    "email": "ygudde2@apple.com",
+    "gender": "Female",
+    "country": "CN"
+  },
+  {
+    "id": 4,
+    "first_name": "Bent",
+    "last_name": "Keyho",
+    "email": "bkeyho3@ucsd.edu",
+    "gender": "Male",
+    "country": "UG"
+  },
+  {
+    "id": 5,
+    "first_name": "Morrie",
+    "last_name": "Delagua",
+    "email": "mdelagua4@hud.gov",
+    "gender": "Polygender",
+    "country": "CN"
+  }
+]
