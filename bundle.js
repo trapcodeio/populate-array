@@ -15,6 +15,8 @@ es.buildSync({
     minify: true,
 });
 
+fs.copyFileSync("./index.d.ts", "./index.esm.d.ts");
+
 // log the file size of bundled file `./browser.js`
 const file = __dirname + "/index.esm.js";
 files.push(getGzippedSize(file));
