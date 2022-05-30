@@ -8,7 +8,8 @@
     "build": "npx tsc",
     "bundle": "npm run build && node bundle.js",
     "test": "node -r ts-node/register bin/test.ts --watch",
-    "test:dev": "nodemon -r ts-node/register bin/test.ts"
+    "test:dev": "nodemon -r ts-node/register bin/test.ts",
+    "prepublishOnly": "npm run bundle"
   },
   "keywords": [],
   "author": "trapcodeio",
