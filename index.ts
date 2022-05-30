@@ -39,7 +39,7 @@ export interface PopulateOptions<PathType = any, AllType = any> {
  * @param array
  * @param options
  */
-export default async function populateArray<PathType = any, AllType = any>(
+export async function populateArray<PathType = any, AllType = any>(
     array: any[],
     options: PopulateOptions<PathType, AllType>
 ) {

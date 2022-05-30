@@ -1,6 +1,6 @@
 import {test} from '@japa/runner'
 import Users from './users.json';
-import populateArray from "../index";
+import {populateArray} from "../index";
 
 
 test('populateArray', async ({assert}) => {
