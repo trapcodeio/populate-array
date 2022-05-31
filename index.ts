@@ -5,8 +5,6 @@ import set from "lodash.set";
  * Populate array Options Type
  */
 export interface PopulateOptions<PathType = any, AllType = any> {
-    // path to populate
-    path: string;
     // as - rename the populated path
     as?: string;
 
@@ -33,35 +31,37 @@ export interface PopulateOptions<PathType = any, AllType = any> {
     each: (each: PathType, allData: AllType) => Promise<any> | any;
 }
 
-
 /**
  * Populate array
  * @param array
+ * @param path
  * @param options
  */
 export async function populateArray<PathType = any, AllType = any>(
     array: any[],
+    path: string,
     options: PopulateOptions<PathType, AllType>
 ) {
     if (options.use) {
-        const pathValues = array.map((item) => get(item, options.path));
+        const pathValues = array.map((item) => get(item, path));
         const convertedValues = await options.use(pathValues);
 
-        await populateEach<PathType>(array, options, convertedValues);
+        await populateEach<PathType>(array, path, options, convertedValues);
     } else {
-        await populateEach<PathType, AllType>(array, options);
+        await populateEach<PathType, AllType>(array, path, options);
     }
 }
-
 
 /**
  * Helper function to populate each item in the array
  * @param array
+ * @param path
  * @param options
  * @param convertedValues
  */
 async function populateEach<PathType = any, AllType = any>(
     array: any[],
+    path: string,
     options: PopulateOptions<PathType, AllType>,
     convertedValues?: AllType
 ) {
@@ -69,7 +69,7 @@ async function populateEach<PathType = any, AllType = any>(
         const unique = new Map<string, PathType>();
 
         for (const item of array) {
-            const pathValue = get(item, options.path);
+            const pathValue = get(item, path);
             let uniqueKey;
             let convertedValue;
 
@@ -86,14 +86,14 @@ async function populateEach<PathType = any, AllType = any>(
                 unique.set(uniqueKey, convertedValue);
             }
 
-            set(item, options.as || options.path, convertedValue);
+            set(item, options.as || path, convertedValue);
         }
     } else {
         for (const item of array) {
-            const pathValue = get(item, options.path);
+            const pathValue = get(item, path);
             set(
                 item,
-                options.as ? options.as : options.path,
+                options.as ? options.as : path,
                 await options.each(pathValue, convertedValues!)
             );
         }

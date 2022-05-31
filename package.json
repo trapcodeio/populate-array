@@ -5,6 +5,7 @@
   "main": "index.js",
   "module": "index.esm.js",
   "scripts": {
+    "ts:watch": "npx tsc --watch",
     "build": "npx tsc",
     "bundle": "npm run build && node bundle.js",
     "test": "node -r ts-node/register bin/test.ts --watch",
