@@ -20,6 +20,7 @@
     "lodash.set": "^4.3.2"
   },
   "devDependencies": {
+    "prettier": "^2.6.2",
     "@japa/assert": "^1.3.4",
     "@japa/runner": "^2.0.8",
     "@japa/spec-reporter": "^1.1.12",
