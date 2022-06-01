@@ -70,15 +70,14 @@ async function populateEach<PathType = any, AllType = any>(
 
         for (const item of array) {
             const pathValue = get(item, path);
-            let uniqueKey;
-            let convertedValue;
 
-            try {
-                uniqueKey = String(pathValue);
-            } catch (error) {
-                throw new Error(`Path value is not string-able`);
+            if (!["string", "number"].includes(typeof pathValue)) {
+                throw new Error(`Unique Path value must be a string or number`);
             }
 
+            const uniqueKey = String(pathValue);
+
+            let convertedValue;
             if (unique.has(uniqueKey)) {
                 convertedValue = unique.get(uniqueKey);
             } else {

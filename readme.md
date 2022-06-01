@@ -10,30 +10,39 @@ npm i populate-array
 yarn add populate-array
 ```
 
+## Import
+```javascript
+// ES6:
+import {populateArray} from 'populate-array';
+// CommonJS:
+var {populateArray} = require('populate-array');
+```
+
 ## Usage
 
 Let's say we have an array of users where each user country is an iso2 code.
 We want this to be the country object instead when sending it to the client side.
 
-```javascript
+```typescript
+import {populateArray} from "populate-array";
+
 const users = [
-  {
-    id: 1,
-    name: 'John Doe',
-    country: 'US'
-  },
-  // ... and so on
+    {
+        id: 1,
+        name: 'John Doe',
+        country: 'US'
+    },
+    // ... and so on
 ];
 
 // Normal way
 for (const user of users) {
-  user.country = getCountryFn(user.country)
+    user.country = getCountryFn(user.country)
 }
 
 // Populate way
-populateArray(users, {
-  path: 'country',
-  each: getCountryFn
+populateArray(users, 'country', {
+    each: getCountryFn
 });
 
 // Result:
@@ -74,8 +83,7 @@ for (const user of users) {
 }
 
 // Populate way
-populateArray(users, {
-  path: 'country',
+populateArray(users, 'country', {
   as: 'countryData',
   each: getCountryFn
 });
@@ -123,7 +131,7 @@ populateArray(users, {
 ### unique
 
 If true, the `each` function will be called only once for a unique `path` value object.
-Note: Your `path` value must be string-able for this to work.
+Note: Your `path` value must be a **string** or **number** for this to work.
 
 ```javascript
 const users = [
@@ -134,8 +142,7 @@ const users = [
   // ... and so on
 ];
 
-populateArray(users, {
-  path: 'country',
+populateArray(users, 'country', {
   unique: true,
   each: (pathValue) => {
     // The each function will be called only 3 times
@@ -147,5 +154,39 @@ populateArray(users, {
 
 ### use
 
-A function that provides any data used to populate
+A function that provides any data that can be used to populate.
+
+Using a database example: A case scenario where we want to populate the `userId` property of a `posts` array.
+
+```javascript
+// The `posts` array is an array of objects
+// where each object has a `userId` property
+// and we want to populate the `user` property
+// with the user object from the database
+
+const posts = [
+  {id: 1, userId: 1, title: 'Post 1'},
+  {id: 2, userId: 2, title: 'Post 2'},
+  {id: 3, userId: 2, title: 'Post 3'},
+  {id: 4, userId: 1, title: 'Post 4'},
+]
+
+populateArray(posts, 'userId', {
+  use(userIds) {
+    // `userIds` is an array of the `userId` values
+    // i.e [1, 2, 2, 1]
+    // Assuming we are using a mongodb like database
+    return Users.find({_id: {$in: userIds}});
+  },
+  each(userId, users) {
+    // `userId` is the value of the `userId` property
+    // `users` is the value returned by the `use` function
+    // now we loop through the users array and return the user object
+    // that matches the `userId` value
+    // This is faster/better than calling the database on each iteration.
+    // in terms of performance.
+    return users.find(user => user.id === userId);
+  }
+});
+```
 
