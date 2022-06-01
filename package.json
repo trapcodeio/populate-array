@@ -1,7 +1,7 @@
 {
   "name": "populate-array",
   "version": "0.1.1",
-  "description": "",
+  "description": "Populate an array of objects with a set of properties",
   "main": "index.js",
   "module": "index.esm.js",
   "scripts": {
@@ -12,7 +12,11 @@
     "test:dev": "npx tsnd --respawn ./bin/test.ts",
     "prepublishOnly": "npm run bundle && npm run test"
   },
-  "keywords": [],
+  "keywords": [
+    "populate",
+    "populate-array",
+    "objects"
+  ],
   "author": "trapcodeio",
   "repository": "https://github.com/trapcodeio/populate-array.git",
   "license": "ISC",

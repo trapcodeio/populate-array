@@ -61,9 +61,21 @@ populateArray(users, 'country', {
 // @formatter:on
 ```
 
+## Arguments
+The populateArray function takes three arguments:
+
+- `array`: The array of objects to populate.
+- `path`: The path of the objects to populate.
+- `options`: The options object.
+
+**Path Note:**
+This package makes use of `lodash.get` to get the value of a key in an object and `lodash.set` to set the value of a key in an object.
+So nested keys are supported. e.g. `user.address.city` using dot notation.
+
 ## Just that?
 
-No!! There's more to the `populateArray` function, and they are packed in its options.
+No!! ☺️ There's more to the `populateArray` function, and they are packed in its options.
+
 
 ## Options
 
