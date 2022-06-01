@@ -1,6 +1,6 @@
 {
   "name": "populate-array",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Populate an array of objects with a set of properties",
   "main": "index.js",
   "module": "index.esm.js",
