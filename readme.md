@@ -11,6 +11,7 @@ yarn add populate-array
 ```
 
 ## Import
+
 ```javascript
 // ES6:
 import {populateArray} from 'populate-array';
@@ -44,24 +45,23 @@ for (const user of users) {
 populateArray(users, 'country', {
     each: getCountryFn
 });
-
 // Result:
-// @formatter:off
+
 [
-  {
-    id: 1,
-    name: 'John Doe',
-    country: {
-      name: 'United States',
-      iso2: 'US'
+    {
+        id: 1,
+        name: 'John Doe',
+        country: {
+            name: 'United States',
+            iso2: 'US'
+        }
     }
-  }
-  // ... and so on
+    // ... and so on
 ]
-// @formatter:on
 ```
 
 ## Arguments
+
 The populateArray function takes three arguments:
 
 - `array`: The array of objects to populate.
@@ -69,13 +69,13 @@ The populateArray function takes three arguments:
 - `options`: The options object.
 
 **Path Note:**
-This package makes use of `lodash.get` to get the value of a key in an object and `lodash.set` to set the value of a key in an object.
+This package makes use of `lodash.get` to get the value of a key in an object and `lodash.set` to set the value of a key
+in an object.
 So nested keys are supported. e.g. `user.address.city` using dot notation.
 
 ## Just that?
 
 No!! ☺️ There's more to the `populateArray` function, and they are packed in its options.
-
 
 ## Options
 
