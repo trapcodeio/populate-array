@@ -8,3 +8,4 @@ tests
 *.ts
 !*.d.ts
 *.log
+pnpm-lock.yaml

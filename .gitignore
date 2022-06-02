@@ -7,3 +7,4 @@ node_modules
 !bundle.js
 *.d.ts
 *.log
+pnpm-lock.yaml
