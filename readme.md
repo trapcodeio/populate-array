@@ -202,3 +202,14 @@ populateArray(posts, 'userId', {
 });
 ```
 
+# Async Operations
+
+To run async operations in `each` or `use` functions you should make use of `populateArrayAsync`
+
+```javascript
+import {populateArrayAsync} from "populate-array"
+
+await populateArrayAsync(users, 'country', {
+  each: getCountryFn
+});
+```
