@@ -1,5 +1,40 @@
-import get from "lodash.get";
-import set from "lodash.set";
+import lodashGet from "lodash.get";
+import lodashSet from "lodash.set";
+
+/**
+ * Check if path has dot notation
+ * @param path
+ */
+function hasDotNotation(path: string) {
+    return path.indexOf(".") !== -1;
+}
+
+/**
+ * Only use lodash get if path has a dot notation
+ * @param obj
+ * @param path
+ */
+function liteGet<T = any>(obj: any, path: string): T | undefined {
+    if (hasDotNotation(path)) {
+        return lodashGet(obj, path) as T;
+    } else {
+        return obj[path] as T;
+    }
+}
+
+/**
+ * Only use lodash set if path has a dot notation
+ * @param obj
+ * @param path
+ * @param value
+ */
+function liteSet<T>(obj: any, path: string, value: T) {
+    if (hasDotNotation(path)) {
+        lodashSet(obj, path, value);
+    } else {
+        obj[path] = value;
+    }
+}
 
 /**
  * Populate array Options Type
@@ -43,7 +78,7 @@ export function populateArray<PathType = any, AllType = any>(
     options: PopulateOptions<PathType, AllType>
 ) {
     if (options.use) {
-        const pathValues = array.map((item) => get(item, path));
+        const pathValues = array.map((item) => liteGet(item, path));
         const convertedValues = options.use(pathValues);
 
         populateEach<PathType>(array, path, options, convertedValues);
@@ -64,7 +99,7 @@ export async function populateArrayAsync<PathType = any, AllType = any>(
     options: PopulateOptions<PathType, AllType>
 ) {
     if (options.use) {
-        const pathValues = array.map((item) => get(item, path));
+        const pathValues = array.map((item) => liteGet(item, path));
         const convertedValues = await options.use(pathValues);
 
         await populateEachAsync<PathType>(array, path, options, convertedValues);
@@ -87,10 +122,10 @@ function populateEach<PathType = any, AllType = any>(
     convertedValues?: AllType
 ) {
     if (options.unique) {
-        const unique = new Map<string, PathType>();
+        const unique = {} as Record<string, PathType>;
 
         for (const item of array) {
-            const pathValue = get(item, path);
+            const pathValue = liteGet(item, path);
 
             if (!["string", "number"].includes(typeof pathValue)) {
                 throw new Error(`Unique Path value must be a string or number`);
@@ -99,19 +134,23 @@ function populateEach<PathType = any, AllType = any>(
             const uniqueKey = String(pathValue);
 
             let convertedValue;
-            if (unique.has(uniqueKey)) {
-                convertedValue = unique.get(uniqueKey);
+            if (unique.hasOwnProperty(uniqueKey)) {
+                convertedValue = unique[uniqueKey];
             } else {
                 convertedValue = options.each(pathValue, convertedValues!);
-                unique.set(uniqueKey, convertedValue);
+                unique[uniqueKey] = convertedValue;
             }
 
-            set(item, options.as || path, convertedValue);
+            liteSet(item, options.as || path, convertedValue);
         }
     } else {
         for (const item of array) {
-            const pathValue = get(item, path);
-            set(item, options.as ? options.as : path, options.each(pathValue, convertedValues!));
+            const pathValue = liteGet(item, path);
+            liteSet(
+                item,
+                options.as ? options.as : path,
+                options.each(pathValue, convertedValues!)
+            );
         }
     }
 }
@@ -130,10 +169,10 @@ async function populateEachAsync<PathType = any, AllType = any>(
     convertedValues?: AllType
 ) {
     if (options.unique) {
-        const unique = new Map<string, PathType>();
+        const unique = {} as Record<string, PathType>;
 
         for (const item of array) {
-            const pathValue = get(item, path);
+            const pathValue = liteGet(item, path);
 
             if (!["string", "number"].includes(typeof pathValue)) {
                 throw new Error(`Unique Path value must be a string or number`);
@@ -142,19 +181,19 @@ async function populateEachAsync<PathType = any, AllType = any>(
             const uniqueKey = String(pathValue);
 
             let convertedValue;
-            if (unique.has(uniqueKey)) {
-                convertedValue = unique.get(uniqueKey);
+            if (unique.hasOwnProperty(uniqueKey)) {
+                convertedValue = unique[uniqueKey];
             } else {
                 convertedValue = await options.each(pathValue, convertedValues!);
-                unique.set(uniqueKey, convertedValue);
+                unique[uniqueKey] = convertedValue;
             }
 
-            set(item, options.as || path, convertedValue);
+            liteSet(item, options.as || path, convertedValue);
         }
     } else {
         for (const item of array) {
-            const pathValue = get(item, path);
-            set(
+            const pathValue = liteGet(item, path);
+            liteSet(
                 item,
                 options.as ? options.as : path,
                 await options.each(pathValue, convertedValues!)
